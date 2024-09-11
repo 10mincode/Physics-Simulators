@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rolling Feel</title>
+	<style type="text/css">
+		body{
+			background-color: cyan;
+			padding: 10rem;
+		}
+		.system{
+			position:relative;
+			margin: auto;
+		}
+		.road{
+			width: 100%;
+			height: 25px;
+			background-color: black;
+			
+		}
+		.ball{
+			position: relative;
+			width: 100px;
+			height: 100px;
+			background-color:white;
+			border: 10px solid black;
+			border-top-color: red;
+			border-bottom-color: green;
+			border-left-color: blue;
+			border-radius: 50%;
+		}
+		.ball::after{
+			content: '';
+			position: absolute;
+			height: 100%;
+			width: 2px;
+			background-color: black;
+			left: calc(50% - 1px);
+			top:0;
+		}.ball::before{
+			content: '';
+			position: absolute;
+			width: 100%;
+			height: 2px;
+			background-color: black;
+			top: calc(50% - 1px);
+			left:0;
+		}
+	</style>
+</head>
+<body>
+		<div class="system">
+			<div class="ball"></div>
+			<div class="road"></div>
+		</div>
+		<div style="display: flex;">
+			<h1 style="margin:auto;">PURE Rolling Motion</h1>
+			<button onclick="p_rolling();" >START PURE Rolling</button>
+			<input placeholder="Enter the velocity (enter pi) (Radius = 50)" type="number" id="velocity"/>
+			<button onclick="document.getElementById('velocity').value=document.getElementById('velocity').value*Math.PI">X pi</button>
+		</div>
+		<script type="text/javascript">
+			function p_rolling(){
+				let v=document.getElementById('velocity').value;
+				if (v==""){window.alert("Enter velocity to conitue"); return;}
+				window.alert(`Starting pure rolling motion with velocity = ${v}  where R=50px`);
+				const road=document.getElementsByClassName('road')[0];
+				road_length=road.getBoundingClientRect().width - 100;
+				console.log(road_length);
+				pi=Math.PI;
+				time_taken=road_length/(v);
+				angle=time_taken*v*180/(pi*50);
+				const styleSheet = document.createElement("style");
+            	styleSheet.type = "text/css";
+				const keyframes = `
+                @keyframes rolling {
+                    0% {
+                        transform: translateX(0) rotateZ(0deg);
+                    }
+                    50% {
+                        transform: translateX(${road_length}px) rotateZ(${angle}deg);
+                    }
+                    100% {
+                    	transform: translateX(0) rotateZ(0deg);	
+                    }
+                }`;
+                styleSheet.innerHTML = keyframes;
+            	document.head.appendChild(styleSheet);
+                const ball=document.getElementsByClassName('ball')[0];
+                ball.style.transform = `translateX(0) rotateZ(0)`;
+                ball.style.animation = `rolling ${time_taken*2}s linear infinite`;
+
+			}
+		</script>
+</body>
+</html>
