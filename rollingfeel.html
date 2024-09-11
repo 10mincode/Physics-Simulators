@@ -59,37 +59,61 @@
 			<button onclick="document.getElementById('velocity').value=document.getElementById('velocity').value*Math.PI">X pi</button>
 		</div>
 		<script type="text/javascript">
-			function p_rolling(){
-				let v=document.getElementById('velocity').value;
-				if (v==""){window.alert("Enter velocity to conitue"); return;}
-				window.alert(`Starting pure rolling motion with velocity = ${v}  where R=50px`);
-				const road=document.getElementsByClassName('road')[0];
-				road_length=road.getBoundingClientRect().width - 100;
-				console.log(road_length);
-				pi=Math.PI;
-				time_taken=road_length/(v);
-				angle=time_taken*v*180/(pi*50);
-				const styleSheet = document.createElement("style");
-            	styleSheet.type = "text/css";
-				const keyframes = `
+			let ballAnimation = null;
+
+        function multiplyByPi() {
+            let velocityInput = document.getElementById('velocity');
+            velocityInput.value = velocityInput.value * Math.PI;
+        }
+
+        function p_rolling() {
+            let v = document.getElementById('velocity').value;
+            if (v === "") {
+                window.alert("Enter velocity to continue");
+                return;
+            }
+
+            window.alert(`Starting pure rolling motion with velocity = ${v}, where R=50px`);
+
+            const road = document.getElementsByClassName('road')[0];
+            const ball = document.getElementsByClassName('ball')[0];
+
+            const road_length = road.getBoundingClientRect().width - 100;
+            const pi = Math.PI;
+            const time_taken = road_length / v;
+            const angle = time_taken * v * 180 / (pi * 50);
+
+            // Remove old animation if it exists
+            if (ballAnimation !== null) {
+                ball.style.animation = '';
+                document.head.removeChild(ballAnimation);
+            }
+
+            // Creating keyframes dynamically
+            const styleSheet = document.createElement("style");
+            styleSheet.type = "text/css";
+            const keyframes = `
                 @keyframes rolling {
                     0% {
                         transform: translateX(0) rotateZ(0deg);
                     }
-                    50% {
+                    100% {
                         transform: translateX(${road_length}px) rotateZ(${angle}deg);
                     }
-                    100% {
-                    	transform: translateX(0) rotateZ(0deg);	
-                    }
                 }`;
-                styleSheet.innerHTML = keyframes;
-            	document.head.appendChild(styleSheet);
-                const ball=document.getElementsByClassName('ball')[0];
-                ball.style.transform = `translateX(0) rotateZ(0)`;
-                ball.style.animation = `rolling ${time_taken*2}s linear infinite`;
+            styleSheet.innerHTML = keyframes;
+            document.head.appendChild(styleSheet);
 
-			}
+            ballAnimation = styleSheet;
+            ball.style.animation = `rolling ${time_taken}s linear infinite`;
+        }
+
+        function resetRolling() {
+            const ball = document.getElementsByClassName('ball')[0];
+            ball.style.transform = 'translateX(0) rotateZ(0deg)';
+            ball.style.animation = '';  // Reset the animation
+            document.getElementById('velocity').value = "";  // Clear the velocity input
+        }
 		</script>
 </body>
 </html>
