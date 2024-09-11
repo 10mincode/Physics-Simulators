@@ -54,9 +54,10 @@
 		</div>
 		<div style="display: flex;">
 			<h1 style="margin:auto;">PURE Rolling Motion</h1>
-			<button onclick="p_rolling();" >START PURE Rolling</button>
-			<input placeholder="Enter the velocity (enter pi) (Radius = 50)" type="number" id="velocity"/>
-			<button onclick="document.getElementById('velocity').value=document.getElementById('velocity').value*Math.PI">X pi</button>
+			<input placeholder="Enter velocity (Click X pi to * by pi)" type="number" id="velocity" />
+        <button onclick="multiplyByPi()">X π</button>
+        <button onclick="p_rolling()">Start PURE Rolling</button>
+        <button onclick="resetRolling()">Reset</button>
 		</div>
 		<script type="text/javascript">
 			let ballAnimation = null;
